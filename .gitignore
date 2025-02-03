@@ -151,6 +151,10 @@ venv.bak/
 .dmypy.json
 dmypy.json
 
+
+# data files
+data/FashionMNIST
+
 # Pyre type checker
 .pyre/
 
