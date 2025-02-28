@@ -155,6 +155,7 @@ dmypy.json
 # data files
 data/FashionMNIST
 **/data/
+exercises/pizza_dad.jpeg
 
 # Pyre type checker
 .pyre/
