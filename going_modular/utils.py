@@ -3,7 +3,10 @@ Contains various utility functions for PyTorch model training and saving.
 """
 
 import torch
+import matplotlib.pyplot as plt
 from pathlib import Path
+from typing import Dict, List
+
 
 def save_model(model: torch.nn.Module, 
                target_dir: str,
@@ -32,3 +35,43 @@ def save_model(model: torch.nn.Module,
     print(f"[INFO] Saving model to: {model_save_path}")
     torch.save(obj=model.state_dict(), f=model_save_path)
 
+def plot_loss_curves(results: Dict[str, List[float]]):
+    """Plots training curves of a results dictionary
+    Args:
+        results (dict): dictionary containing list of values, e.g.
+            {"train_loss": [...],
+             "train_accuracy": [...],
+             "test_loss": [...],
+             "test_accuracy": [...]}
+    """
+    # Get the loss values from the results dictionary (training and testing)
+    loss = results["train_loss"]
+    test_loss = results["test_loss"]
+
+    # Get the accuracy values from the results dictionary (training & testing)
+    accuracy = results["train_accuracy"]
+    test_accuracy = results["test_accuracy"]
+
+    # Get the epochs
+    epochs = range(len(results["train_loss"]))
+
+    # Setup the plot
+    plt.figure(figsize=(15,7))
+
+    # plot the loss
+    plt.subplot(1,2,1)
+    plt.plot(epochs, loss, label="Train Loss")
+    plt.plot(epochs, test_loss, label="Test Loss")
+    plt.title("Loss Curves")
+    plt.xlabel("epochs")
+    plt.ylabel("loss")
+    plt.legend()
+
+    # plot the loss
+    plt.subplot(1,2,2)
+    plt.plot(epochs, accuracy, label="Train Accuracy")
+    plt.plot(epochs, test_accuracy, label="Test Accuracy")
+    plt.title("Accuracy Curves")
+    plt.xlabel("epochs")
+    plt.ylabel("accuracy")
+    plt.legend()

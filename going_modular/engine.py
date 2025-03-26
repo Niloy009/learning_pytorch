@@ -170,8 +170,7 @@ def train(model: torch.nn.Module,
                       test_acc: [0.3400, 0.2973]} 
   """
     # Create empty results dictionary
-    results = {
-                "train_loss": [], 
+    results = { "train_loss": [], 
                 "train_accuracy": [], 
                 "test_loss": [], 
                 "test_accuracy": []
@@ -198,6 +197,11 @@ def train(model: torch.nn.Module,
             f"test_loss: {test_loss: .4f} | "
             f"test_accuracy: {test_accuracy: .4f}"
         )
+        # 5. update the results
+        results["train_loss"].append(train_loss)
+        results["train_accuracy"].append(train_accuracy)
+        results["test_loss"].append(test_loss)
+        results["test_accuracy"].append(test_accuracy)
 
     return results
     
