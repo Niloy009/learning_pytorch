@@ -3,6 +3,7 @@ Contains functions for training and testing a PyTorch model
 """
 
 import torch
+from torch.utils.tensorboard import SummaryWriter
 import torchmetrics
 from tqdm.auto import tqdm
 from typing import Dict, List, Tuple
@@ -137,14 +138,17 @@ def train(model: torch.nn.Module,
           optimizer: torch.optim.Optimizer,
           accuracy: torchmetrics.classification.accuracy.Accuracy,
           epochs: int,
-          device: torch.device) -> Dict[str, List]:
+          device: torch.device, 
+          writer: torch.utils.tensorboard.writer.SummaryWriter) -> Dict[str, List]:
     """Trains and test a PyTorch model
 
     Passes a target PyTorch model through train_step() and test_step()
     functions for a number of epochs. training and testing the model in the same epoch loop.
 
     Calculates, prints and stores evaluation metrics throughout.
-
+    
+    Stores metrics to specified writer log_dir if present.
+    
     Args:
         model: A PyTorch model to be tested.
         train_dataloader: A DataLoader instance for the model to be trained on.
@@ -153,7 +157,9 @@ def train(model: torch.nn.Module,
         optimizer: A PyTorch optimizer to help minimize the loss function.
         accuracy: A torchmetric module to calculate accuracy.
         epochs: An integar indicating how many epochs to train for.
-        device: A target device to compute on (i.e. "cuda" or "cpu")
+        device: A target device to compute on (i.e. "cuda" or "cpu").
+        writer: A SummaryWriter() instance to log model results to.
+
 
     Returns:
         A dictionary of training and testing loss as well as training and
@@ -203,5 +209,26 @@ def train(model: torch.nn.Module,
         results["test_loss"].append(test_loss)
         results["test_accuracy"].append(test_accuracy)
 
-    return results
+        #### New: Experiment tracking with tensorboard ####
+        if writer:
+            writer.add_scalars(main_tag="Loss", 
+                               tag_scalar_dict={"train_loss": train_loss, 
+                                                "test_loss": test_loss}, 
+                               global_step=epoch)
+            
+            writer.add_scalars(main_tag="Accuracy", 
+                               tag_scalar_dict={"train_accuracy": train_accuracy, 
+                                                "test_accuracy": test_accuracy}, 
+                               global_step=epoch)
     
+            writer.add_graph(model=model, input_to_model=torch.randn(32,3,224,224).to(device))
+    
+            # Close the writer
+            writer.close()
+        else:
+            pass
+
+        #### End: Experiment tracking with tensorboard ####
+        
+
+    return results
