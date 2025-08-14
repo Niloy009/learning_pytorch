@@ -157,6 +157,8 @@ data/FashionMNIST
 **/data/
 exercises/pizza_dad.jpeg
 
+runs/
+
 # Pyre type checker
 .pyre/
 
