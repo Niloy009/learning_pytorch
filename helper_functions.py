@@ -256,10 +256,10 @@ def download_data(source: str,
         source (str): A link to a zipped file containing data.
         destination (str): A target directory to unzip data to.
         remove_source (bool): Whether to remove the source after downloading and extracting.
-    
+
     Returns:
         pathlib.Path to downloaded data.
-    
+
     Example usage:
         download_data(source="https://github.com/mrdbourke/pytorch-deep-learning/raw/main/data/pizza_steak_sushi.zip",
                       destination="pizza_steak_sushi")
@@ -274,7 +274,7 @@ def download_data(source: str,
     else:
         print(f"[INFO] Did not find {image_path} directory, creating one...")
         image_path.mkdir(parents=True, exist_ok=True)
-        
+
         # Download pizza, steak, sushi data
         target_file = Path(source).name
         with open(data_path / target_file, "wb") as f:
@@ -284,11 +284,11 @@ def download_data(source: str,
 
         # Unzip pizza, steak, sushi data
         with zipfile.ZipFile(data_path / target_file, "r") as zip_ref:
-            print(f"[INFO] Unzipping {target_file} data...") 
+            print(f"[INFO] Unzipping {target_file} data...")
             zip_ref.extractall(image_path)
 
         # Remove .zip file
         if remove_source:
             os.remove(data_path / target_file)
-    
+
     return image_path

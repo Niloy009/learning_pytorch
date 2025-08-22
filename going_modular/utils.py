@@ -29,7 +29,7 @@ def save_model(model: torch.nn.Module,
                target_dir: str,
                model_name: str):
     """Saves a PyTorch model to a target directory
-    
+
     Args:
         model: A target PyTorch model to save.
         target_dir: A directory for saving the model to.
@@ -57,7 +57,7 @@ def create_writer(experiment_name: str,
                   model_name: str, 
                   extra: str = None) -> torch.utils.tensorboard.writer.SummaryWriter():
     """Create a torch.utils.tensorboard.writer.SummaryWriter() instance saving to a specific log_dir
-    
+
     log_dir is a combination of runs/timestamp/experiment_name/model_name/extra
 
     Where timestamp is current date in YYYY-MM-DD format
@@ -90,7 +90,7 @@ def create_writer(experiment_name: str,
 
     print(f"[INFO] Created SummaryWriter saving to {log_dir}")
     return SummaryWriter(log_dir=log_dir)
-    
+
 
 
 
