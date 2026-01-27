@@ -4,6 +4,9 @@ __pycache__/
 .virtual_documents/
 .ipynb_checkpoints/
 
+# VSCode
+.vscode/
+
 # IPython
 profile_default/
 ipython_config.py
